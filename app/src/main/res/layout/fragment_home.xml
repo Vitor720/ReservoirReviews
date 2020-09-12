@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools">
+
+<data>
+    <variable
+        name="viewModel"
+        type="com.ddapps.reservoirreviews.ui.viewmodel.HomeViewModel"/>
+</data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/home_layout_central"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_margin="8dp"
+        android:background="@drawable/square_customized_search_bar"
+        android:orientation="horizontal"
+        android:paddingRight="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/text_busca"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:backgroundTint="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:hint="Digite o titulo ou parte do mesmo"
+            android:imeOptions="actionSearch"
+            android:paddingLeft="10dp"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/imagem_busca"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical|left"
+            android:background="@drawable/ic_magn_glass" />
+    </LinearLayout>
+
+   <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/refresh_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_refresh_grey"
+        app:layout_constraintVertical_bias="0.4"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:isVisible="@{viewModel.isError &amp;&amp; !viewModel.loading}"/>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintVertical_bias="0.4"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:isVisible="@{viewModel.loading}"
+        style="?android:progressBarStyleLarge">
+    </ProgressBar>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_movie_reviews"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:isVisible="@{!viewModel.loading &amp;&amp; !viewModel.isError}"
+        android:layout_marginTop="12dp"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintTop_toBottomOf="@+id/listar_pedido_layout_busca"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
