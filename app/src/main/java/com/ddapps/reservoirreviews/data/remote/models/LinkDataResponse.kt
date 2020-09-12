@@ -1,4 +1,4 @@
-package com.ddapps.reservoirreviews.data.models
+package com.ddapps.reservoirreviews.data.remote.models
 
 data class LinkDataResponse(
     val suggested_link_text: String,

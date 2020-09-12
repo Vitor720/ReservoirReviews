@@ -1,6 +1,6 @@
 package com.ddapps.reservoirreviews.data.remote
 
-import com.ddapps.reservoirreviews.data.models.MovieDataResponse
+import com.ddapps.reservoirreviews.data.remote.models.MovieDataResponse
 import com.ddapps.reservoirreviews.utils.BASE_URL
 import com.ddapps.reservoirreviews.utils.BASE_kEY
 import okhttp3.OkHttpClient

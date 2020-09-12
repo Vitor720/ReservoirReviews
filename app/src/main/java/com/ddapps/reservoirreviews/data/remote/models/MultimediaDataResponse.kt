@@ -1,4 +1,4 @@
-package com.ddapps.reservoirreviews.data.models
+package com.ddapps.reservoirreviews.data.remote.models
 
 data class MultimediaDataResponse(
     val height: Int,
