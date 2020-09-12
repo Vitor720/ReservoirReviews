@@ -14,6 +14,6 @@ import com.ddapps.reservoirreviews.data.local.entity.ReviewEntity
     exportSchema = false
 )
 
-public abstract class AppDataBase: RoomDatabase() {
-    public abstract fun reviewDao() : ReviewDao
+abstract class AppDataBase: RoomDatabase() {
+    abstract fun reviewDao() : ReviewDao
 }

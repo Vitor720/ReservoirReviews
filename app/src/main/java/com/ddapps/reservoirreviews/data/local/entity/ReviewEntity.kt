@@ -18,4 +18,5 @@ data class ReviewEntity(
     val critics_name: String,
     val critics_choise: Int,
     val critics_short_review: String,
-    val complete_review_link: String)
+    val complete_review_link: String,
+    var user_favorite: Int)

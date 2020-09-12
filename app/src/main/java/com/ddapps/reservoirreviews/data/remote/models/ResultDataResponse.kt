@@ -8,7 +8,7 @@ data class ResultDataResponse(
     val headline: String,
     val link: LinkDataResponse,
     val mpaa_rating: String,
-    val multimedia: MultimediaDataResponse,
+    val multimedia: MultimediaDataResponse?,
     val opening_date: String,
     val publication_date: String,
     val summary_short: String

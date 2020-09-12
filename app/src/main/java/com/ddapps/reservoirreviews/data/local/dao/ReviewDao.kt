@@ -10,11 +10,11 @@ import com.ddapps.reservoirreviews.data.local.entity.ReviewEntity
 interface ReviewDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun add(movies : List<ReviewEntity>)
+   suspend fun add(movie: List<ReviewEntity>)
 
-    @Query("SELECT * FROM review")
-    fun getAllRevies() : List<ReviewEntity>
+    @Query("SELECT * FROM review WHERE user_favorite = 1")
+    fun getFavoriteReviews() : List<ReviewEntity>
 
-    @Query("SELECT * FROM review WHERE movie_title LIKE :title")
-    fun getReviewByMovieTitle(title : String) : List<ReviewEntity>
+    @Query("SELECT * FROM review WHERE movie_title LIKE '%' || :title || '%'")
+    suspend  fun getReviewByMovieTitle(title : String) : List<ReviewEntity>
 }
