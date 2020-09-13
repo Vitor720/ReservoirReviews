@@ -38,7 +38,6 @@ class ReviewsAdapter(private var reviewsList: List<MovieDisplay>, private val cl
 
         fun bind(item: MovieDisplay){
             binding.movieTitle.text = item.movieTitle
-            binding.criticsName.text = item.criticsName
             binding.movieImage.load(item.movieImage)
         }
 

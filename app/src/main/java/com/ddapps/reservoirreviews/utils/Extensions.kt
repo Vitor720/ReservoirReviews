@@ -4,7 +4,6 @@ import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.ddapps.reservoirreviews.data.local.entity.ReviewEntity
-import com.ddapps.reservoirreviews.data.remote.models.MultimediaDataResponse
 import com.ddapps.reservoirreviews.data.remote.models.ResultDataResponse
 import com.ddapps.reservoirreviews.domain.common.model.MovieDisplay
 import com.squareup.picasso.Picasso
@@ -16,29 +15,35 @@ fun List<ResultDataResponse>.mapForRoom(): List<ReviewEntity>{
     initialList.forEach {
         val reviewEntity = ReviewEntity(
             id = null,
-            movie_title = it.display_title,
+            movie_title = it.display_title ?: "Sem Titulo",
             movie_img_url = it.multimedia?.src ?: "",
             movie_img_local = "",
-            movie_release_date = it.publication_date,
-            critics_name = it.byline,
-            critics_choise = it.critics_pick,
-            critics_short_review = it.summary_short,
-            complete_review_link = it.link.url,
+            movie_release_date = it.opening_date ?: "Data não fornecida",
+            critics_name = it.byline ?: "Sem autor",
+            critics_choise = it.critics_pick ?: 0,
+            critics_short_review = it.summary_short ?: "Resumo não encontrado",
+            complete_review_link = it.link?.url ?: "",
             user_favorite = 0)
         entityList.add(reviewEntity)
     }
     return entityList
 }
 
+fun ReviewEntity.mapForView(): MovieDisplay{
+    val reviewEntity = this
+    return MovieDisplay( movieTitle  = reviewEntity.movie_title,
+                         movieImage  = reviewEntity.movie_img_url,
+                         releaseDate = reviewEntity.movie_release_date,
+                         shortReview = reviewEntity.critics_short_review,
+                         reviewLink  = reviewEntity.complete_review_link,
+                         criticsName = reviewEntity.critics_name,
+                         criticsPick = reviewEntity.critics_choise == CRITICS_APPROVAL)
+
+}
 
 fun List<ReviewEntity>.mapForView(): List<MovieDisplay>{
-    val initialList = this
-    val displayList = mutableListOf<MovieDisplay>()
-    initialList.forEach {
-        val movieDislay = MovieDisplay(it.movie_title, it.movie_img_url, it.critics_name)
-        displayList.add(movieDislay)
-    }
-    return displayList
+    val entityList = this
+    return entityList.map { it.mapForView() }
 }
 
 @BindingAdapter("imagePath")
@@ -60,4 +65,23 @@ fun View.mudarVisibilidade(){
         this.visibility = View.INVISIBLE
     else if(this.visibility == View.INVISIBLE)
         this.visibility = View.VISIBLE
+}
+
+@set:BindingAdapter("isVisible")
+inline var View.isVisible: Boolean
+    get() = visibility == View.VISIBLE
+    set(value) {
+        visibility = if (value) View.VISIBLE else View.GONE
+    }
+
+fun View.show() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.hide() {
+    this.visibility = View.INVISIBLE
+}
+
+fun View.gone() {
+    this.visibility = View.GONE
 }

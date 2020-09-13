@@ -23,13 +23,11 @@ import com.ddapps.reservoirreviews.data.repository.MovieRepository
 import com.ddapps.reservoirreviews.domain.common.model.MovieDisplay
 import com.ddapps.reservoirreviews.domain.common.networking.Resource
 import com.ddapps.reservoirreviews.domain.common.networking.Status
-import com.ddapps.reservoirreviews.utils.EndlessRecyclerViewScrollListener
-import com.ddapps.reservoirreviews.utils.IReviewClickListener
-import com.ddapps.reservoirreviews.utils.mapForView
-import com.ddapps.reservoirreviews.utils.mudarVisibilidade
+import com.ddapps.reservoirreviews.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -41,14 +39,16 @@ class HomeFragment : Fragment(), IReviewClickListener {
     private val observer = Observer<Resource<List<MovieDisplay>>> {
         when (it.status) {
             Status.SUCCESS -> {
-                binding?.progress?.mudarVisibilidade()
+                binding?.progress?.hide()
+                binding?.emptyReviewLayout?.hide()
                 loadRecycler(it.data!!)
             }
             Status.ERROR -> {
-                binding?.progress?.mudarVisibilidade()
+                binding?.progress?.hide()
+                binding?.emptyReviewLayout?.show()
                 Timber.e(it.message.toString() )
             }
-            Status.LOADING -> { binding?.progress?.mudarVisibilidade()}
+            Status.LOADING -> { binding?.progress?.show()}
         }
     }
 
@@ -67,8 +67,9 @@ class HomeFragment : Fragment(), IReviewClickListener {
     private fun setSearchBar() {
         binding?.searchImage?.setOnClickListener {
             val title = binding?.searchText!!.text.toString()
+            adapter = null
             viewModel.loadReviews(title, 0, 0)
-            adapter?.clear()
+
         }
     }
 
@@ -80,7 +81,6 @@ class HomeFragment : Fragment(), IReviewClickListener {
             binding?.recyclerMovieReviews?.layoutManager = layoutManager
             adapter = ReviewsAdapter(reviewList, this)
             binding?.recyclerMovieReviews?.adapter = adapter
-
             setUpScrollListener(layoutManager)
         }
     }
@@ -89,7 +89,6 @@ class HomeFragment : Fragment(), IReviewClickListener {
     private fun setUpScrollListener(layoutManager: StaggeredGridLayoutManager) {
         val scrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-//                val offset = page * DEFAULT_LIMIT
 //                viewModel.loadMovies(title, offset, DEFAULT_LIMIT)
             }
         }
@@ -98,6 +97,7 @@ class HomeFragment : Fragment(), IReviewClickListener {
 
     override fun onClick(movieTitle: String) {
         val navegateDetailsFragment = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(movieTitle)
+        adapter = null
         findNavController().navigate(navegateDetailsFragment)
     }
 }

@@ -8,6 +8,7 @@ import com.ddapps.reservoirreviews.data.repository.MovieRepository
 import com.ddapps.reservoirreviews.domain.common.networking.ResponseHandler
 import com.ddapps.reservoirreviews.domain.usecase.DisplayReviewsUseCase
 import com.ddapps.reservoirreviews.domain.usecase.FavoritesReviewsUseCase
+import com.ddapps.reservoirreviews.ui.viewmodel.DetailsViewModel
 import com.ddapps.reservoirreviews.ui.viewmodel.HomeViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -20,6 +21,7 @@ val networkModule = module {
 
 val viewModelModule = module {
     viewModel { HomeViewModel(get(), get()) }
+    viewModel { DetailsViewModel(get()) }
 }
 
 val useCaseModule = module {

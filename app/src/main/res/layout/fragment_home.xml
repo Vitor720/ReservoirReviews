@@ -14,7 +14,7 @@ xmlns:tools="http://schemas.android.com/tools">
     android:id="@+id/home_layout_central"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@color/grey_10">
 
     <LinearLayout
         android:id="@+id/search_layout"
@@ -74,6 +74,20 @@ xmlns:tools="http://schemas.android.com/tools">
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
+
+    <RelativeLayout
+        android:id="@+id/empty_review_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/search_layout">
+
+        <ImageView
+            android:id="@+id/cactus_img"
+            android:layout_width="match_parent"
+            android:layout_height="380dp"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/bg_no_item_cactus"/>
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -13,9 +13,6 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(private val reviewUseCase: DisplayReviewsUseCase, private val bookMarkUseCase: FavoritesReviewsUseCase): ViewModel() {
 
-    var isError: Boolean = false
-    var isLoading: Boolean = true
-
     private var reviewsList = MutableLiveData<Resource<List<MovieDisplay>>>()
 
     fun getReviewList() =  reviewsList
