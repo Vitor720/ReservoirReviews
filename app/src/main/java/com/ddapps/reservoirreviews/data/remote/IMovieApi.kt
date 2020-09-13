@@ -8,7 +8,7 @@ interface IMovieApi {
 
     @GET("reviews/search.json")
     suspend fun getMoviesByName(
-        @Query("query") title: String,
+        @Query("display_title") display_title: String,
         @Query("api-key") apiKey: String,
         @Query("offset") offset:Int): MovieDataResponse
 }
