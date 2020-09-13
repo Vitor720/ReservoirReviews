@@ -36,6 +36,13 @@ class DetailsFragment : Fragment() {
         val movieTitle = args.title
         viewModel.getSingleReviewByTitle(movieTitle)
         viewModel.getMovieReview().observe(viewLifecycleOwner, observer)
+        setFavoriteButton()
+    }
+
+    fun setFavoriteButton(){
+        binding?.favoriteImg?.setOnClickListener {
+            viewModel.setCurrentReviewFavorite()
+        }
     }
 
     private val observer = Observer<Resource<MovieDisplay>> {

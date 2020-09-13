@@ -9,7 +9,7 @@ import com.ddapps.reservoirreviews.data.local.entity.ReviewEntity
 @Dao
 interface ReviewDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
    suspend fun add(movie: List<ReviewEntity>)
 
     @Query("SELECT * FROM review WHERE user_favorite = 1")
@@ -20,4 +20,8 @@ interface ReviewDao {
 
     @Query("SELECT * FROM review WHERE movie_title = :title")
     suspend fun getSingleReviewByMovieTitle(title: String): ReviewEntity
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateReviewToFavorite(review: ReviewEntity)
+
 }
