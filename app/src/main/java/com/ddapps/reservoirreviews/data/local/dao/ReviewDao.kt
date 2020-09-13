@@ -13,8 +13,11 @@ interface ReviewDao {
    suspend fun add(movie: List<ReviewEntity>)
 
     @Query("SELECT * FROM review WHERE user_favorite = 1")
-    fun getFavoriteReviews() : List<ReviewEntity>
+    suspend fun getFavoriteReviews() : List<ReviewEntity>
 
     @Query("SELECT * FROM review WHERE movie_title LIKE '%' || :title || '%'")
-    suspend  fun getReviewByMovieTitle(title : String) : List<ReviewEntity>
+    suspend fun getListReviewsByMovieTitle(title : String) : List<ReviewEntity>
+
+    @Query("SELECT * FROM review WHERE movie_title = :title")
+    suspend fun getSingleReviewByMovieTitle(title: String): ReviewEntity
 }

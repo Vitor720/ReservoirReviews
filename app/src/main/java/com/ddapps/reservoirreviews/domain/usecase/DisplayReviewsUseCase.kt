@@ -19,14 +19,21 @@ class DisplayReviewsUseCase(private val reviewsRepo: MovieRepository, private va
       }
     }
 
+    suspend fun getReviewByMovieTitle(title: String): Resource<MovieDisplay>{
+        val localResponse = reviewsRepo.getLocalSingleReview(title)
+        return Resource.success(localResponse.data?.mapForView())
+
+    }
+
     private suspend fun retriveRemoteList(title: String): Resource<List<MovieDisplay>> {
         val apiResponse = getApiMoviesByTitle(title)
         storeReviewList(apiResponse)
-        val list = reviewsRepo.getLocalMoviesByName(title).data?.mapForView()
-        return if (list.isNullOrEmpty()){
+        val localResponse = reviewsRepo.getLocalMoviesByName(title)
+        val movieList = localResponse.data!!.mapForView()
+        return if (movieList.isNullOrEmpty()){
             Resource.error("Titulo não encontrado", null)
         } else {
-            Resource.success(list)
+            Resource.success(movieList)
         }
     }
 
@@ -39,7 +46,7 @@ class DisplayReviewsUseCase(private val reviewsRepo: MovieRepository, private va
     }
 
     private suspend fun storeReviewList(apiResponse: Resource<MovieDataResponse>) {
-        reviewsRepo.storeReviews(apiResponse.data?.results ?: listOf())
+        reviewsRepo.storeReviews(apiResponse.data!!.results )
     }
 
 

@@ -1,6 +1,5 @@
 package com.ddapps.reservoirreviews.data.repository
 
-import android.widget.Toast
 import com.ddapps.reservoirreviews.data.local.dao.ReviewDao
 import com.ddapps.reservoirreviews.data.local.entity.ReviewEntity
 import com.ddapps.reservoirreviews.data.remote.models.MovieDataResponse
@@ -27,9 +26,18 @@ class MovieRepository(private val movieApi: RestApi,
 
   suspend  fun getLocalMoviesByName(name: String): Resource<List<ReviewEntity>> {
         return try {
-            val response = database.getReviewByMovieTitle(name)
+            val response = database.getListReviewsByMovieTitle(name)
             return responseHandler.handleSuccess(response)
         } catch (t: Throwable) {
+            responseHandler.handleThrowable(t)
+        }
+    }
+
+    suspend fun getLocalSingleReview(title: String): Resource<ReviewEntity>{
+        return try {
+            val response = database.getSingleReviewByMovieTitle(title)
+            return responseHandler.handleSuccess(response)
+        } catch (t: Throwable){
             responseHandler.handleThrowable(t)
         }
     }

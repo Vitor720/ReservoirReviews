@@ -3,6 +3,7 @@ package com.ddapps.reservoirreviews.utils
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import com.ddapps.reservoirreviews.R
 import com.ddapps.reservoirreviews.data.local.entity.ReviewEntity
 import com.ddapps.reservoirreviews.data.remote.models.ResultDataResponse
 import com.ddapps.reservoirreviews.domain.common.model.MovieDisplay
@@ -49,14 +50,13 @@ fun List<ReviewEntity>.mapForView(): List<MovieDisplay>{
 @BindingAdapter("imagePath")
 fun ImageView.load(imagePath: String?) {
     val imageView = this
-//    val requestOptions = Picasso.with(imageView.context).load("file://$imagePath").centerInside()
+
     if (imagePath.isNullOrEmpty()){
         return
     } else {
-        val requestOptions = Picasso.with(imageView.context).load(imagePath)
+        val requestOptions = Picasso.with(imageView.context).load(imagePath).fit().placeholder(R.drawable.ic_cinema_clapper).error(R.drawable.ic_cinema_clapper)
         requestOptions.into(this)
     }
-
 
 }
 
