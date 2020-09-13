@@ -9,8 +9,8 @@ import androidx.room.PrimaryKey
 )
 
 data class ReviewEntity(
-    @PrimaryKey(autoGenerate = true)
     val id : Int?,
+    @PrimaryKey
     val movie_title : String,
     val movie_img_url: String,
     val movie_img_local: String,

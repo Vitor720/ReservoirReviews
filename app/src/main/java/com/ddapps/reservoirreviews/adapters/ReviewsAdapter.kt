@@ -14,7 +14,6 @@ class ReviewsAdapter(private var reviewsList: List<MovieDisplay>, private val cl
 
     var reviewMutableList: MutableList<MovieDisplay> = mutableListOf()
 
-
     init {
         reviewMutableList.addAll(reviewsList)
     }
@@ -39,15 +38,21 @@ class ReviewsAdapter(private var reviewsList: List<MovieDisplay>, private val cl
 
         fun bind(item: MovieDisplay){
             binding.movieTitle.text = item.movieTitle
-//            binding.movieImage.load(item.movieImage)
+            binding.criticsName.text = item.criticsName
+            binding.movieImage.load(item.movieImage)
         }
 
         init {
             rowLayout.setOnClickListener {
-                val reviewID = reviewMutableList[adapterPosition].reviewID
-                clickListenerI.onClick(reviewID)
+                val movieTitle = reviewMutableList[adapterPosition].movieTitle
+                clickListenerI.onClick(movieTitle)
             }
         }
+    }
+
+    fun clear(){
+        reviewMutableList.removeAll { true }
+        notifyDataSetChanged()
     }
 
     fun addMoreItems(newReiewList: List<MovieDisplay>){
