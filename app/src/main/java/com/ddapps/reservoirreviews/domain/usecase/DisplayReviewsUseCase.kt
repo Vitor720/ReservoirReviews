@@ -6,6 +6,7 @@ import com.ddapps.reservoirreviews.data.repository.MovieRepository
 import com.ddapps.reservoirreviews.domain.common.model.MovieDisplay
 import com.ddapps.reservoirreviews.domain.common.networking.Resource
 import com.ddapps.reservoirreviews.domain.common.networking.ResponseHandler
+import com.ddapps.reservoirreviews.domain.common.networking.Status
 import com.ddapps.reservoirreviews.utils.mapForView
 
 class DisplayReviewsUseCase(private val reviewsRepo: MovieRepository, private val handle: ResponseHandler) {
@@ -27,11 +28,14 @@ class DisplayReviewsUseCase(private val reviewsRepo: MovieRepository, private va
 
     private suspend fun retriveRemoteList(title: String): Resource<List<MovieDisplay>> {
         val apiResponse = getApiMoviesByTitle(title)
+        if (apiResponse.status == Status.ERROR){
+            return Resource.error("Please check your network connection", null)
+        }
         storeReviewList(apiResponse)
         val localResponse = reviewsRepo.getLocalMoviesByName(title)
         val movieList = localResponse.data!!.mapForView()
         return if (movieList.isNullOrEmpty()){
-            Resource.error("Titulo não encontrado", null)
+            Resource.error("Title not found", null)
         } else {
             Resource.success(movieList)
         }
@@ -46,7 +50,7 @@ class DisplayReviewsUseCase(private val reviewsRepo: MovieRepository, private va
     }
 
     private suspend fun storeReviewList(apiResponse: Resource<MovieDataResponse>) {
-        reviewsRepo.storeReviews(apiResponse.data!!.results )
+        reviewsRepo.storeReviews(apiResponse.data?.results ?: listOf())
     }
 
 

@@ -66,7 +66,7 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="60dp"
+                                android:layout_height="wrap_content"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
                                 android:paddingLeft="15dp"
@@ -79,6 +79,7 @@
                                     android:orientation="vertical">
 
                                     <TextView
+                                        android:id="@+id/movie_name"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="@{movie.movieTitle}"
@@ -87,10 +88,21 @@
                                         android:textColor="@color/grey_90" />
 
                                     <TextView
+                                        android:id="@+id/release_date"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="@{movie.releaseDate}"
+                                        android:text="@{movie.getDisplayDate()}"
                                         android:hint="18/09/1989"
+                                        android:layout_marginTop="5dp"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="@color/grey_40" />
+
+                                    <TextView
+                                        android:id="@+id/review_author"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@{movie.getReviewAuthor()}"
+                                        android:hint="by Quentin Tarantino"
                                         android:layout_marginTop="7dp"
                                         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                                         android:textColor="@color/grey_40" />
@@ -129,7 +141,7 @@
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginRight="15dp"
                                 android:layout_marginTop="10dp"
-                                android:text="Descrição"
+                                android:text="Short Description"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                                 android:textColor="@color/grey_90"
                                 app:fontFamily="sans-serif-medium" />
@@ -154,11 +166,29 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/grey_60"
-                                android:text="Clique aqui para ir para review completa"/>
+                                android:text="Click here to display full review"/>
 
+                            <RelativeLayout
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="15dp"
+                                android:layout_marginTop="10dp"
+                                android:lineSpacingExtra="3dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
 
+                                <WebView
+                                    android:id="@+id/webView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="fill_parent"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentEnd="true" />
+
+                            </RelativeLayout>
 
                         </LinearLayout>
+
 
                     </androidx.cardview.widget.CardView>
 

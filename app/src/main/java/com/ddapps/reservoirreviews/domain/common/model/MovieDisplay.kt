@@ -8,4 +8,14 @@ class MovieDisplay(val movieTitle : String,
                    val criticsName: String,
                    val criticsPick: Boolean) {
 
+    var swiped: Boolean = false
+
+    fun getReviewAuthor(): String{
+        return "by $criticsName"
+    }
+
+    fun getDisplayDate(): String{
+        return "released: $releaseDate"
+    }
+
 }

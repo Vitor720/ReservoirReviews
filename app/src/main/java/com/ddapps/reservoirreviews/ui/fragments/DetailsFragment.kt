@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebViewClient
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -13,9 +14,6 @@ import com.ddapps.reservoirreviews.domain.common.model.MovieDisplay
 import com.ddapps.reservoirreviews.domain.common.networking.Resource
 import com.ddapps.reservoirreviews.domain.common.networking.Status
 import com.ddapps.reservoirreviews.ui.viewmodel.DetailsViewModel
-import com.ddapps.reservoirreviews.ui.viewmodel.HomeViewModel
-import com.ddapps.reservoirreviews.utils.mudarVisibilidade
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -39,7 +37,7 @@ class DetailsFragment : Fragment() {
         setFavoriteButton()
     }
 
-    fun setFavoriteButton(){
+    private fun setFavoriteButton(){
         binding?.favoriteImg?.setOnClickListener {
             viewModel.setCurrentReviewFavorite()
         }
@@ -49,13 +47,22 @@ class DetailsFragment : Fragment() {
         when (it.status) {
             Status.SUCCESS -> {
                 binding?.movie = it.data
+                loadFullReview(it.data!!.reviewLink)
                 binding?.executePendingBindings()
             }
             Status.ERROR -> {
-                Timber.e(it.message.toString() )
+                Timber.e(it.message.toString())
             }
-            Status.LOADING -> {}
+            Status.LOADING -> {
+            }
         }
+    }
+
+    private fun loadFullReview(link: String) {
+        val webView = binding!!.webView
+        webView.webViewClient = WebViewClient()
+        webView.settings.javaScriptEnabled = true
+        webView.loadUrl(link)
     }
 
 }
