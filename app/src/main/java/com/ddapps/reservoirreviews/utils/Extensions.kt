@@ -54,7 +54,7 @@ fun ImageView.load(imagePath: String?) {
     if (imagePath.isNullOrEmpty()){
         return
     } else {
-        val requestOptions = Picasso.with(imageView.context).load(imagePath).fit().placeholder(R.drawable.ic_cinema_clapper).error(R.drawable.ic_cinema_clapper)
+        val requestOptions = Picasso.with(imageView.context).load(imagePath).fit().error(R.drawable.ic_cinema_clapper)
         requestOptions.into(this)
     }
 
