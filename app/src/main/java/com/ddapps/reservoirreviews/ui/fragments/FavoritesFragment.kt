@@ -16,10 +16,7 @@ import com.ddapps.reservoirreviews.domain.common.model.MovieDisplay
 import com.ddapps.reservoirreviews.domain.common.networking.Resource
 import com.ddapps.reservoirreviews.domain.common.networking.Status
 import com.ddapps.reservoirreviews.ui.viewmodel.FavoriteViewModel
-import com.ddapps.reservoirreviews.utils.IReviewClickListener
-import com.ddapps.reservoirreviews.utils.SwipeItemTouchHelper
-import com.ddapps.reservoirreviews.utils.hide
-import com.ddapps.reservoirreviews.utils.show
+import com.ddapps.reservoirreviews.utils.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -67,7 +64,6 @@ class FavoritesFragment : Fragment(), IReviewClickListener {
         binding?.recyclerFavorites?.layoutManager = layoutManager
         adapter = FavoritesAdapter(requireContext(), reviewList, this)
         binding!!.recyclerFavorites.adapter = adapter
-
         val callback: ItemTouchHelper.Callback = SwipeItemTouchHelper(adapter)
         itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper?.attachToRecyclerView(binding?.recyclerFavorites)
@@ -75,7 +71,9 @@ class FavoritesFragment : Fragment(), IReviewClickListener {
 
     override fun onClick(movieTitle: String) {
         viewModel.removeTitleFromFavorites(movieTitle)
-
+        if (adapter.itemCount == LAST_ITEM_BEEN_REMOVED){
+            binding?.emptyReviewLayout?.show()
+        }
     }
 }
 

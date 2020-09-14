@@ -69,15 +69,16 @@ class HomeFragment : Fragment(), IReviewClickListener {
     }
 
     private fun loadRecycler(reviewList: List<MovieDisplay>){
+        val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         if (adapter != null) {
             adapter?.addMoreItems(reviewList)
         } else {
-            val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             binding?.recyclerMovieReviews?.layoutManager = layoutManager
             adapter = ReviewsAdapter(reviewList, this)
-            binding?.recyclerMovieReviews?.adapter = adapter
             setUpScrollListener(layoutManager)
         }
+        binding?.recyclerMovieReviews?.layoutManager = layoutManager
+        binding?.recyclerMovieReviews?.adapter = adapter
     }
 
 

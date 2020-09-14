@@ -25,7 +25,11 @@ class DetailsFragment : Fragment() {
     private var binding: FragmentDetailsBinding? = null
     private val viewModel: DetailsViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_details, container, false)
         return binding?.root
     }
