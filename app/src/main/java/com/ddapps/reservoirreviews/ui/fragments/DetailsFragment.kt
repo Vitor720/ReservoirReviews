@@ -1,10 +1,12 @@
 package com.ddapps.reservoirreviews.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -37,6 +39,7 @@ class DetailsFragment : Fragment() {
         setFavoriteButton()
     }
 
+
     private fun setFavoriteButton(){
         binding?.favoriteImg?.setOnClickListener {
             viewModel.setCurrentReviewFavorite()
@@ -47,8 +50,13 @@ class DetailsFragment : Fragment() {
         when (it.status) {
             Status.SUCCESS -> {
                 binding?.movie = it.data
-                loadFullReview(it.data!!.reviewLink)
                 binding?.executePendingBindings()
+                binding?.reviewLink?.setOnClickListener { _ ->
+                    loadFullReview(binding?.movie?.reviewLink)
+                }
+                binding?.shareImg?.setOnClickListener { _ ->
+                    shareReview(it.data?.movieTitle ?: "", it.data?.reviewLink ?: "")
+                }
             }
             Status.ERROR -> {
                 Timber.e(it.message.toString())
@@ -58,11 +66,25 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    private fun loadFullReview(link: String) {
-        val webView = binding!!.webView
-        webView.webViewClient = WebViewClient()
-        webView.settings.javaScriptEnabled = true
-        webView.loadUrl(link)
+    private fun loadFullReview(link: String?) {
+        try {
+            val webView = binding!!.webView
+            webView.webViewClient = WebViewClient()
+            webView.settings.javaScriptEnabled = true
+            webView.loadUrl(link!!)
+            binding?.reviewLink?.text = "Full Review"
+            binding?.reviewLink?.setTextAppearance(R.style.TextAppearance_AppCompat_Title)
+        } catch (t: Throwable){
+            Toast.makeText(requireContext(), "Check your internet and try again", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun shareReview(movieTitle: String, link: String){
+        val share = Intent(Intent.ACTION_SEND)
+        share.type = "text/plain"
+        share.putExtra(Intent.EXTRA_SUBJECT, movieTitle)
+        share.putExtra(Intent.EXTRA_TEXT, link)
+        startActivity(Intent.createChooser(share, "$movieTitle Review!"))
     }
 
 }

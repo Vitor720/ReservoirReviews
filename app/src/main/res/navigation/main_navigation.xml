@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.ddapps.reservoirreviews.ui.fragments.HomeFragment"
-        android:label="fragment_home"
+        android:label="Reservoir Dogs Review"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_detailsFragment"
@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.ddapps.reservoirreviews.ui.fragments.DetailsFragment"
-        android:label="fragment_details"
+        android:label="Movie Review Details"
         tools:layout="@layout/fragment_details" >
         <argument
             android:name="title"
@@ -33,6 +33,6 @@
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.ddapps.reservoirreviews.ui.fragments.FavoritesFragment"
-        android:label="fragment_favorites"
+        android:label="Favorite's"
         tools:layout="@layout/fragment_favorites" />
 </navigation>
