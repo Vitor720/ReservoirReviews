@@ -1,20 +1,23 @@
 package com.ddapps.reservoirreviews.data.repository
 
+import com.ddapps.reservoirreviews.data.local.AppDataBase
 import com.ddapps.reservoirreviews.data.local.dao.ReviewDao
 import com.ddapps.reservoirreviews.data.local.entity.ReviewEntity
 import com.ddapps.reservoirreviews.data.remote.models.ResultDataResponse
 import com.ddapps.reservoirreviews.domain.common.model.MovieDisplay
 import com.ddapps.reservoirreviews.domain.common.networking.Resource
 import com.ddapps.reservoirreviews.domain.common.networking.ResponseHandler
+import com.ddapps.reservoirreviews.utils.USER_FAVORITE
 import com.ddapps.reservoirreviews.utils.mapForRoom
 import timber.log.Timber
 
-class FavatoritesRepository(private val responseHandler: ResponseHandler, private val dataBase: ReviewDao) {
-
+class FavatoritesRepository(private val responseHandler: ResponseHandler,
+                            private val dataBase: ReviewDao
+) {
 
     suspend fun setReviewFavorite(title: String){
         val entity = getLocalSingleReview(title).data
-        entity?.user_favorite = 1
+        entity?.user_favorite = USER_FAVORITE
         storeFavoriteReview(entity!!)
     }
 

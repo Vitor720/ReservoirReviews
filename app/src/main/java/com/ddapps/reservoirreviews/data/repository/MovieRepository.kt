@@ -1,5 +1,7 @@
 package com.ddapps.reservoirreviews.data.repository
 
+import com.ddapps.reservoirreviews.PusherApplication
+import com.ddapps.reservoirreviews.data.local.AppDataBase
 import com.ddapps.reservoirreviews.data.local.dao.ReviewDao
 import com.ddapps.reservoirreviews.data.local.entity.ReviewEntity
 import com.ddapps.reservoirreviews.data.remote.models.MovieDataResponse
@@ -12,9 +14,8 @@ import timber.log.Timber
 
 class MovieRepository(private val movieApi: RestApi,
                       private val responseHandler: ResponseHandler,
-                      private val database: ReviewDao
+                      private val dataBase: ReviewDao
 ) {
-
     suspend fun getRemoteMoviesByName(name: String): Resource<MovieDataResponse> {
         return try {
             val response = movieApi.getMoviesByTitle(name)
@@ -25,17 +26,14 @@ class MovieRepository(private val movieApi: RestApi,
     }
 
   suspend  fun getLocalMoviesByName(name: String): Resource<List<ReviewEntity>> {
-        return try {
-            val response = database.getListReviewsByMovieTitle(name)
+            val response = dataBase.getListReviewsByMovieTitle(name)
             return responseHandler.handleSuccess(response)
-        } catch (t: Throwable) {
-            responseHandler.handleThrowable(t)
-        }
+
     }
 
     suspend fun getLocalSingleReview(title: String): Resource<ReviewEntity>{
         return try {
-            val response = database.getSingleReviewByMovieTitle(title)
+            val response = dataBase.getSingleReviewByMovieTitle(title)
             return responseHandler.handleSuccess(response)
         } catch (t: Throwable){
             responseHandler.handleThrowable(t)
@@ -45,7 +43,9 @@ class MovieRepository(private val movieApi: RestApi,
    suspend fun storeReviews(reviews: List<ResultDataResponse>){
         try{
             val entitys = reviews.mapForRoom()
-            database.add(entitys)
+            dataBase.add(entitys)
+            Timber.e("chegou aqui")
+            Timber.e("chegou ${entitys.lastOrNull()?.movie_title}")
         }catch (t: Throwable){
             Timber.e("Falhou por ${t.message}")
         }

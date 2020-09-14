@@ -13,7 +13,7 @@ class FavoritesReviewsUseCase(private val favoriteRepo: FavatoritesRepository) {
 
     suspend fun getAllFavoriteReviews(): Resource<List<MovieDisplay>>{
         val favorites = favoriteRepo.getAllFavorites()
-        return Resource.success(favorites.data?.mapForView() ?: listOf())
+        return Resource.success(favorites.data!!.mapForView())
     }
 
 }

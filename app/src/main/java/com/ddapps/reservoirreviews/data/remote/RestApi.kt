@@ -32,7 +32,7 @@ class RestApi {
         return retrofit.create(IMovieApi::class.java)
     }
 
-   suspend fun getMoviesByTitle(name: String, offset: Int = 0): MovieDataResponse{
-        return api.getMoviesByName(name, BASE_kEY, offset)
+   suspend fun getMoviesByTitle(name: String): MovieDataResponse{
+        return api.getMoviesByName(name, BASE_kEY)
     }
 }

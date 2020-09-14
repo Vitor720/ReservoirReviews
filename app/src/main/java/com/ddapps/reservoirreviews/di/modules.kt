@@ -28,7 +28,7 @@ val viewModelModule = module {
 }
 
 val useCaseModule = module {
-    factory { FavoritesReviewsUseCase(get()) }
+    factory { FavoritesReviewsUseCase(get())}
     factory { DisplayReviewsUseCase(get(), get()) }
 }
 
