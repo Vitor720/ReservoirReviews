@@ -50,7 +50,6 @@ fun List<ReviewEntity>.mapForView(): List<MovieDisplay>{
 @BindingAdapter("imagePath")
 fun ImageView.load(imagePath: String?) {
     val imageView = this
-
     if (imagePath.isNullOrEmpty()){
         return
     } else {

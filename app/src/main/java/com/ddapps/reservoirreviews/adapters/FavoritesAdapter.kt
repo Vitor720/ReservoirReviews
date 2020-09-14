@@ -5,13 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.ddapps.reservoirreviews.R
 import com.ddapps.reservoirreviews.databinding.RowFavoriteBinding
 import com.ddapps.reservoirreviews.domain.common.model.MovieDisplay
+import com.ddapps.reservoirreviews.ui.fragments.FavoritesFragment
+import com.ddapps.reservoirreviews.ui.fragments.FavoritesFragmentDirections
+import com.ddapps.reservoirreviews.ui.fragments.HomeFragmentDirections
 import com.ddapps.reservoirreviews.utils.IReviewClickListener
 import com.ddapps.reservoirreviews.utils.SwipeItemTouchHelper
 import kotlinx.android.synthetic.main.item_swipe_undo.view.*
+import timber.log.Timber
 import java.util.*
 
 class FavoritesAdapter(private val context: Context, private val list: List<MovieDisplay>, private val clickListener: IReviewClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder?>(), SwipeItemTouchHelper.SwipeHelperAdapter {
@@ -32,6 +39,13 @@ class FavoritesAdapter(private val context: Context, private val list: List<Movi
 
         override fun onItemClear() {
             itemView.setBackgroundColor(0)
+        }
+
+        init {
+            binding.rowLayout.setOnClickListener {
+                val navegateDetailsFragment = FavoritesFragmentDirections.actionFavoritesFragmentToDetailsFragment(items[adapterPosition].movieTitle)
+                binding.rowLayout.findNavController().navigate(navegateDetailsFragment)
+            }
         }
     }
 
