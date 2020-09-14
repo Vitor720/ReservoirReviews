@@ -53,5 +53,10 @@ class DisplayReviewsUseCase(private val reviewsRepo: MovieRepository, private va
         reviewsRepo.storeReviews(apiResponse.data?.results ?: listOf())
     }
 
+   suspend fun getAllLocalReviews(): Resource<List<MovieDisplay>> {
+       val localResponse = reviewsRepo.getLocalMoviesByName("")
+       return Resource(localResponse.status, localResponse.data?.mapForView(), localResponse.message)
+    }
+
 
 }

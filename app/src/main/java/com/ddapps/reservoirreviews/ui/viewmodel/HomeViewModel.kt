@@ -23,4 +23,11 @@ class HomeViewModel(private val reviewUseCase: DisplayReviewsUseCase, private va
             reviewsList.postValue(reviewUseCase.getReviewsByMovieTitle(title))
         }
     }
+
+    fun loadLocalReviews() {
+        viewModelScope.launch {
+            val response = reviewUseCase.getAllLocalReviews()
+            reviewsList.postValue(response)
+        }
+    }
 }

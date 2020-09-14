@@ -25,10 +25,13 @@ class MovieRepository(private val movieApi: RestApi,
         }
     }
 
-  suspend  fun getLocalMoviesByName(name: String): Resource<List<ReviewEntity>> {
+    suspend fun getLocalMoviesByName(name: String): Resource<List<ReviewEntity>> {
+        return try {
             val response = dataBase.getListReviewsByMovieTitle(name)
             return responseHandler.handleSuccess(response)
-
+        } catch (t: Throwable) {
+            responseHandler.handleThrowable(t)
+        }
     }
 
     suspend fun getLocalSingleReview(title: String): Resource<ReviewEntity>{
@@ -40,12 +43,12 @@ class MovieRepository(private val movieApi: RestApi,
         }
     }
 
+
+
    suspend fun storeReviews(reviews: List<ResultDataResponse>){
         try{
             val entitys = reviews.mapForRoom()
             dataBase.add(entitys)
-            Timber.e("chegou aqui")
-            Timber.e("chegou ${entitys.lastOrNull()?.movie_title}")
         }catch (t: Throwable){
             Timber.e("Falhou por ${t.message}")
         }

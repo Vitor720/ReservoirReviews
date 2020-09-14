@@ -1,35 +1,27 @@
 package com.ddapps.reservoirreviews.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import com.ddapps.reservoirreviews.R
-import com.ddapps.reservoirreviews.adapters.ReviewsAdapter
-import com.ddapps.reservoirreviews.databinding.FragmentHomeBinding
-import com.ddapps.reservoirreviews.ui.viewmodel.HomeViewModel
-import kotlinx.coroutines.runBlocking
-import org.koin.android.ext.android.inject
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.ddapps.reservoirreviews.data.local.dao.ReviewDao
-import com.ddapps.reservoirreviews.data.repository.MovieRepository
+import com.ddapps.reservoirreviews.R
+import com.ddapps.reservoirreviews.adapters.ReviewsAdapter
+import com.ddapps.reservoirreviews.databinding.FragmentHomeBinding
 import com.ddapps.reservoirreviews.domain.common.model.MovieDisplay
 import com.ddapps.reservoirreviews.domain.common.networking.Resource
 import com.ddapps.reservoirreviews.domain.common.networking.Status
-import com.ddapps.reservoirreviews.utils.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import com.ddapps.reservoirreviews.ui.viewmodel.HomeViewModel
+import com.ddapps.reservoirreviews.utils.EndlessRecyclerViewScrollListener
+import com.ddapps.reservoirreviews.utils.IReviewClickListener
+import com.ddapps.reservoirreviews.utils.hide
+import com.ddapps.reservoirreviews.utils.show
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class HomeFragment : Fragment(), IReviewClickListener {
     private var binding: FragmentHomeBinding? = null
@@ -40,13 +32,15 @@ class HomeFragment : Fragment(), IReviewClickListener {
         when (it.status) {
             Status.SUCCESS -> {
                 binding?.progress?.hide()
-                binding?.emptyReviewLayout?.hide()
-                loadRecycler(it.data!!)
+                if (!it.data.isNullOrEmpty()){
+                    binding?.emptyReviewLayout?.hide()
+                    loadRecycler(it.data)
+                }
             }
             Status.ERROR -> {
                 binding?.progress?.hide()
                 binding?.emptyReviewLayout?.show()
-                Timber.e(it.message.toString() )
+                binding?.errorText?.text = it.message
             }
             Status.LOADING -> { binding?.progress?.show()}
         }
@@ -61,6 +55,7 @@ class HomeFragment : Fragment(), IReviewClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getReviewList().observe(viewLifecycleOwner, observer)
+        viewModel.loadLocalReviews()
         setSearchBar()
     }
 
