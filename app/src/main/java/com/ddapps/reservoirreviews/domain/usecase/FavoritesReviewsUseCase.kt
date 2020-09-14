@@ -16,4 +16,8 @@ class FavoritesReviewsUseCase(private val favoriteRepo: FavatoritesRepository) {
         return Resource.success(favorites.data!!.mapForView())
     }
 
+   suspend fun removeFavoriteMovie(movieTitle: String) {
+        favoriteRepo.removeReviewByMovieTitle(movieTitle)
+    }
+
 }

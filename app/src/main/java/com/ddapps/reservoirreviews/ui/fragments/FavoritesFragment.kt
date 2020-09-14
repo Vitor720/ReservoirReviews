@@ -50,11 +50,7 @@ class FavoritesFragment : Fragment(), IReviewClickListener {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorites, container, false)
         return binding?.root
     }
@@ -69,7 +65,7 @@ class FavoritesFragment : Fragment(), IReviewClickListener {
         val layoutManager = LinearLayoutManager(requireContext())
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         binding?.recyclerFavorites?.layoutManager = layoutManager
-        adapter = FavoritesAdapter(requireContext(), reviewList)
+        adapter = FavoritesAdapter(requireContext(), reviewList, this)
         binding!!.recyclerFavorites.adapter = adapter
 
         val callback: ItemTouchHelper.Callback = SwipeItemTouchHelper(adapter)
@@ -78,6 +74,8 @@ class FavoritesFragment : Fragment(), IReviewClickListener {
     }
 
     override fun onClick(movieTitle: String) {
+        viewModel.removeTitleFromFavorites(movieTitle)
+
     }
 }
 

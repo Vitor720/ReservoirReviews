@@ -1,19 +1,15 @@
 package com.ddapps.reservoirreviews.data.repository
 
-import com.ddapps.reservoirreviews.data.local.AppDataBase
 import com.ddapps.reservoirreviews.data.local.dao.ReviewDao
 import com.ddapps.reservoirreviews.data.local.entity.ReviewEntity
-import com.ddapps.reservoirreviews.data.remote.models.ResultDataResponse
-import com.ddapps.reservoirreviews.domain.common.model.MovieDisplay
 import com.ddapps.reservoirreviews.domain.common.networking.Resource
 import com.ddapps.reservoirreviews.domain.common.networking.ResponseHandler
 import com.ddapps.reservoirreviews.utils.USER_FAVORITE
-import com.ddapps.reservoirreviews.utils.mapForRoom
+import com.ddapps.reservoirreviews.utils.USER_UNFAVORITE
 import timber.log.Timber
 
 class FavatoritesRepository(private val responseHandler: ResponseHandler,
-                            private val dataBase: ReviewDao
-) {
+                            private val dataBase: ReviewDao) {
 
     suspend fun setReviewFavorite(title: String){
         val entity = getLocalSingleReview(title).data
@@ -33,7 +29,6 @@ class FavatoritesRepository(private val responseHandler: ResponseHandler,
     private suspend fun storeFavoriteReview(review: ReviewEntity){
         try{
             dataBase.updateReviewToFavorite(review)
-            Timber.e("Concluiu")
         }catch (t: Throwable){
             Timber.e("Falhou por ${t.message}")
         }
@@ -46,6 +41,15 @@ class FavatoritesRepository(private val responseHandler: ResponseHandler,
        }catch (t: Throwable){
            responseHandler.handleThrowable(t)
        }
+    }
+
+    suspend fun removeReviewByMovieTitle(movieTitle: String) {
+        val entity = getLocalSingleReview(movieTitle).data
+        try {
+            entity!!.user_favorite = USER_UNFAVORITE
+            storeFavoriteReview(entity)
+        } catch (t: Throwable){
+        }
     }
 
 }
