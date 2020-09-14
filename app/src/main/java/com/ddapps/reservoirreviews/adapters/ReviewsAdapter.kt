@@ -10,7 +10,7 @@ import com.ddapps.reservoirreviews.domain.common.model.MovieDisplay
 import com.ddapps.reservoirreviews.utils.IReviewClickListener
 import com.ddapps.reservoirreviews.utils.load
 
-class ReviewsAdapter(private var reviewsList: List<MovieDisplay>, private val clickListenerI: IReviewClickListener): RecyclerView.Adapter<ReviewsAdapter.ViewHolder>() {
+class ReviewsAdapter(private val reviewsList: List<MovieDisplay>, private val clickListenerI: IReviewClickListener): RecyclerView.Adapter<ReviewsAdapter.ViewHolder>() {
 
     var reviewMutableList: MutableList<MovieDisplay> = mutableListOf()
 
@@ -32,7 +32,6 @@ class ReviewsAdapter(private var reviewsList: List<MovieDisplay>, private val cl
         return reviewMutableList.size
     }
 
-
     inner class ViewHolder internal constructor(val binding: RowReviewBinding): RecyclerView.ViewHolder(binding.root){
          val rowLayout = binding.reviewRow
 
@@ -48,12 +47,6 @@ class ReviewsAdapter(private var reviewsList: List<MovieDisplay>, private val cl
             }
         }
     }
-
-    fun clear(){
-        reviewMutableList.removeAll { true }
-        notifyDataSetChanged()
-    }
-
     fun addMoreItems(newReiewList: List<MovieDisplay>){
         reviewMutableList.addAll(newReiewList)
         notifyDataSetChanged()
