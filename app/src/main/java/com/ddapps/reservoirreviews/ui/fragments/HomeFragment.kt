@@ -21,6 +21,7 @@ import com.ddapps.reservoirreviews.utils.EndlessRecyclerViewScrollListener
 import com.ddapps.reservoirreviews.utils.IReviewClickListener
 import com.ddapps.reservoirreviews.utils.hide
 import com.ddapps.reservoirreviews.utils.show
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(), IReviewClickListener {
@@ -78,7 +79,9 @@ class HomeFragment : Fragment(), IReviewClickListener {
             setUpScrollListener(layoutManager)
         }
         binding?.recyclerMovieReviews?.layoutManager = layoutManager
-        binding?.recyclerMovieReviews?.adapter = adapter
+        binding?.recyclerMovieReviews?.adapter = AlphaInAnimationAdapter(adapter!!).apply {
+                setDuration(800)
+            }
     }
 
 

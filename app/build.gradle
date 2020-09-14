@@ -108,4 +108,7 @@ dependencies {
 
     // ripple effect
     implementation 'com.balysv:material-ripple:1.0.2'
+
+    //RecyclerView Animations
+    implementation 'jp.wasabeef:recyclerview-animators:4.0.0'
 }
